@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 public class ScoreManager : MonoBehaviour
@@ -10,6 +11,7 @@ public class ScoreManager : MonoBehaviour
     public int wallHit;
     public TMP_Text keyAmountText;
     public int keyAmount = 5;
+    public GameObject score;
 
     void Start()
     {
@@ -30,11 +32,12 @@ public class ScoreManager : MonoBehaviour
 
     void Update()
     {
-        UpdateUIText(); // Memastikan teks UI diperbarui setiap frame
+        UpdateUIText();
     }
 
     private void UpdateUIText()
     {
+        // Fungsi untuk memastikan teks UI sudah diatur dengan nilai awal
         if (wallHitText != null && keyAmountText != null)
         {
             wallHitText.text = "Wall Hit: " + wallHit.ToString();

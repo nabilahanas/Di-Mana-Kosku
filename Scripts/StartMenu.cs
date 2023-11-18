@@ -5,39 +5,56 @@ using UnityEngine.SceneManagement;
 
 public class StartMenu : MonoBehaviour
 {
-    public AudioSource startSound;
+    public AudioManager audioManager;
+    public GameObject startScene;
+
+    Player pl;
 
     public void Start()
     {
-        
+        pl = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
     }
 
     public void Update()
     {
+        // Enable the Player script
+        if (pl != null)
+        {
+            pl.enabled = false;
+        }
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             // Memainkan suara sebelum pindah ke scene berikutnya
             PlayTransitionSound();
 
-            // Pindah ke scene berikutnya setelah suara selesai
-            StartCoroutine(LoadNextScene());
+            // Menyembunyikan UI setelah suara selesai
+            StartCoroutine(HideUI());
         }
     }
 
     void PlayTransitionSound()
     {
-        if (startSound != null)
+        if (audioManager != null)
         {
-            startSound.Play();
+            audioManager.PlaySFX(audioManager.start);
         }
     }
 
-    private IEnumerator LoadNextScene()
+    private IEnumerator HideUI()
     {
         // Menunggu beberapa detik sebelum pindah ke scene berikutnya
-        yield return new WaitForSeconds(startSound.clip.length);
+        yield return new WaitForSeconds(0.2f);
 
-        // Pindah ke scene berikutnya
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        // Menonaktifkan GameObject UI
+        if (startScene != null)
+        {
+            startScene.SetActive(false);
+        }
+
+        if (pl != null)
+        {
+            pl.enabled = true;
+        }
     }
 }

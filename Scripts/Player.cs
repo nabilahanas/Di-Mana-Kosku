@@ -8,13 +8,14 @@ using TMPro;
 public class Player : MonoBehaviour
 {
     ScoreManager sm;
+    AudioManager audioManager;
 
     public float speed = 5.0f;
     public AudioSource audioPlayer;
     public GameObject barrier;
     public GameObject endGame;
-
-    AudioManager audioManager;
+    public Sprite[] sprites; // Masukkan sprite-sprite ke sini melalui Inspector
+    private SpriteRenderer spriteRenderer;
 
     private bool isGameWon = false; // Udah menang atau belum?
 
@@ -24,26 +25,26 @@ public class Player : MonoBehaviour
     }
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         sm = GameObject.FindGameObjectWithTag("ScoreManager").GetComponent<ScoreManager>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         // Hentikan gerakan jika pemain sudah menang
         if (!isGameWon)
         {
             HandlePlayerMovement();
         }
-
         // Handle input jika pemain sudah menang
         if (isGameWon)
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                SceneManager.LoadScene(1);
+                SceneManager.LoadScene(0);
             }
 
             if (Input.GetKeyDown(KeyCode.Escape))
@@ -55,21 +56,39 @@ public class Player : MonoBehaviour
 
     private void HandlePlayerMovement()
     {
-        if (Input.GetKey(KeyCode.LeftArrow))
+        float horizontalInput = Input.GetAxis("Horizontal");
+        float verticalInput = Input.GetAxis("Vertical");
+
+        Vector3 movement = new Vector3(horizontalInput, verticalInput, 0);
+        transform.Translate(movement * speed * Time.deltaTime);
+
+        if (horizontalInput > 0)
         {
-            transform.Translate(-speed * Time.deltaTime, 0, 0);
+            // Ke kanan
+            ChangeSprite(0);
         }
-        if (Input.GetKey(KeyCode.RightArrow))
+        else if (horizontalInput < 0)
         {
-            transform.Translate(speed * Time.deltaTime, 0, 0);
+            // Ke kiri
+            ChangeSprite(1);
         }
-        if (Input.GetKey(KeyCode.UpArrow))
+        else if (verticalInput > 0)
         {
-            transform.Translate(0, speed * Time.deltaTime, 0);
+            // Ke atas
+            ChangeSprite(2);
         }
-        if (Input.GetKey(KeyCode.DownArrow))
+        else if (verticalInput < 0)
         {
-            transform.Translate(0, -speed * Time.deltaTime, 0);
+            // Ke bawah
+            ChangeSprite(3);
+        }
+    }
+
+    private void ChangeSprite(int spriteIndex)
+    {
+        if (spriteIndex >= 0 && spriteIndex < sprites.Length)
+        {
+            spriteRenderer.sprite = sprites[spriteIndex];
         }
     }
 
