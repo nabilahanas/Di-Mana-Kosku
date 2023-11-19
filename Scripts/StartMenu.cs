@@ -37,6 +37,10 @@ public class StartMenu : MonoBehaviour
             // Menyembunyikan UI setelah suara selesai
             StartCoroutine(HideUI());
         }
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
     }
 
     void PlayTransitionSound()
