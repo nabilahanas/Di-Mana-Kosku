@@ -11,7 +11,6 @@ public class ScoreManager : MonoBehaviour
     public int wallHit;
     public TMP_Text keyAmountText;
     public int keyAmount = 5;
-    public GameObject score;
 
     void Start()
     {

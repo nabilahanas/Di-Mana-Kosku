@@ -7,12 +7,18 @@ public class StartMenu : MonoBehaviour
 {
     public AudioManager audioManager;
     public GameObject startScene;
+    public GameObject score;
 
     Player pl;
 
     public void Start()
     {
         pl = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+
+        if (score != null)
+        {
+            score.SetActive(false);
+        }
     }
 
     public void Update()
@@ -55,6 +61,11 @@ public class StartMenu : MonoBehaviour
         if (pl != null)
         {
             pl.enabled = true;
+        }
+
+        if (score != null)
+        {
+            score.SetActive(true);
         }
     }
 }
